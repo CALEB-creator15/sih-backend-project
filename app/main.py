@@ -1,11 +1,14 @@
 from fastapi import FastAPI
-
+from pydantic import BaseModel
+from app.models.dummy_model import model_instance
+from app.routers.traffic import router as traffic_router
 # Create the FastAPI app instance
 app = FastAPI(
     title="Intelligent Traffic Management System Backend",
     description="Backend API for traffic monitoring, ML inference, and IoT data handling",
     version="0.1"
 )
+app.include_router(traffic_router, prefix="/traffic", tags=["traffic"])
 
 # Root endpoint (for quick testing)
 @app.get("/")
@@ -17,24 +20,6 @@ async def root():
 async def load_model():
     # In future you'll load your actual ML model here.
     return {"status": "Model loaded successfully!"}
-from fastapi import FastAPI
-from pydantic import BaseModel
-from app.models.dummy_model import model_instance
-
-app = FastAPI(
-    title="Intelligent Traffic Management System Backend",
-    description="Backend API for traffic monitoring, ML inference, and IoT data handling",
-    version="0.1"
-)
-
-@app.get("/")
-async def root():
-    return {"message": "Hello, FastAPI is working!"}
-
-@app.get("/load_model")
-async def load_model():
-    return {"status": "Model loaded successfully!"}
-
 
 # -------- Step 3: Model inference --------
 class VehicleData(BaseModel):
@@ -45,4 +30,3 @@ class VehicleData(BaseModel):
 async def predict_vehicle(data: VehicleData):
     result = model_instance.predict(data)
     return {"prediction": result}
-from app.models.dummy_model import model_instance
