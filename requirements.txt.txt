@@ -1,0 +1,10 @@
+# Core dependencies
+numpy
+pyyaml
+
+# Image/Video processing (headless = no GUI, saves space)
+opencv-python-headless
+
+# Inference backends (lightweight for Pi)
+tflite-runtime
+onnxruntime
